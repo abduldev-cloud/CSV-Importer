@@ -76,15 +76,13 @@ export class GeminiService {
 
   /**
    * Sends a batch of up to 50 raw records to Gemini AI.
-   * Cycles through a fallback model list if a model encounters a 503, 429, or 404 error.
+   * Employs structured JSON schema configs and retries up to 3 times on failures.
    */
   static async processBatch(
     batch: Record<string, unknown>[],
-    attempt: number = 1,
-    modelIndex: number = 0
+    attempt: number = 1
   ): Promise<CrmMappingResult[]> {
-    const models = ['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-2.0-flash'];
-    const activeModel = models[modelIndex] || 'gemini-2.5-flash';
+    const activeModel = 'gemini-2.5-flash';
 
     try {
       console.log(`Sending batch to Gemini using model: ${activeModel} (Attempt ${attempt}/3)...`);
@@ -124,20 +122,13 @@ export class GeminiService {
     } catch (error: any) {
       console.error(`Gemini processBatch failed on model '${activeModel}' (Attempt ${attempt}/3):`, error.message || error);
 
-      // If we have fallback models left in our list, try the next model immediately
-      if (modelIndex < models.length - 1) {
-        console.log(`🔄 Outage detected on model '${activeModel}'. Falling back to model: '${models[modelIndex + 1]}'`);
-        return this.processBatch(batch, 1, modelIndex + 1);
-      }
-
-      // If all models in the fallback chain have been tried, perform retries with backoff on the final model
       if (attempt < 3) {
-        console.log(`Retrying on final model '${activeModel}' in 2 seconds...`);
+        console.log(`Retrying on model '${activeModel}' in 2 seconds...`);
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        return this.processBatch(batch, attempt + 1, modelIndex);
+        return this.processBatch(batch, attempt + 1);
       }
 
-      throw new Error(`Failed to map batch after trying all fallback models. Last Error: ${error.message || error}`);
+      throw new Error(`Failed to map batch after 3 attempts. Error: ${error.message || error}`);
     }
   }
 }
