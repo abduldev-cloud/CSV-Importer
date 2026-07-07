@@ -118,13 +118,13 @@ export class GeminiService {
       return mappedResults;
     } catch (error: any) {
       console.error(`Gemini processBatch failed on attempt ${attempt} of 3:`, error.message || error);
-      
+
       if (attempt < 3) {
         // Linear backoff: wait 2 seconds before retry
         await new Promise((resolve) => setTimeout(resolve, 2000));
         return this.processBatch(batch, attempt + 1);
       }
-      
+
       throw new Error(`Failed to map batch after 3 attempts. Error: ${error.message || error}`);
     }
   }
