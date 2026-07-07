@@ -1,19 +1,25 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { config } from './config';
+import router from './routes';
+import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
-const port = process.env.PORT || 5000;
 
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: config.corsOrigin,
+}));
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'OK', message: 'GrowEasy CSV Importer Backend is running' });
-});
+// Allow parsing larger payloads for incoming CSV rows data arrays (50MB limit)
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+// Register routes
+app.use('/', router);
+
+// Register the error handling middleware (must be registered after all other routes)
+app.use(errorHandler);
+
+app.listen(config.port, () => {
+  console.log(`Server is running on port ${config.port} in ${config.nodeEnv} mode`);
 });
