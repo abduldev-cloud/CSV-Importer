@@ -10,14 +10,14 @@ export class CsvService {
     return new Promise((resolve, reject) => {
       const results: Record<string, string>[] = [];
       const readStream = fs.createReadStream(filePath);
-      
+
       const parser = readStream.pipe(csvParser());
 
       parser.on('data', (data) => {
         // Trim headers and values
         const cleanData: Record<string, string> = {};
         let hasContent = false;
-        
+
         for (const [key, val] of Object.entries(data)) {
           const cleanKey = key.trim();
           const cleanVal = typeof val === 'string' ? val.trim() : String(val);
@@ -26,12 +26,12 @@ export class CsvService {
             hasContent = true;
           }
         }
-        
+
         // Only push if row has at least one cell with content
         if (hasContent) {
           results.push(cleanData);
         }
-        
+
         if (results.length >= limit) {
           // Destroy the stream to avoid reading more of the file
           readStream.destroy();
@@ -56,13 +56,13 @@ export class CsvService {
     return new Promise((resolve, reject) => {
       const results: Record<string, string>[] = [];
       const readStream = fs.createReadStream(filePath);
-      
+
       const parser = readStream.pipe(csvParser());
 
       parser.on('data', (data) => {
         const cleanData: Record<string, string> = {};
         let hasContent = false;
-        
+
         for (const [key, val] of Object.entries(data)) {
           const cleanKey = key.trim();
           const cleanVal = typeof val === 'string' ? val.trim() : String(val);
@@ -71,7 +71,7 @@ export class CsvService {
             hasContent = true;
           }
         }
-        
+
         if (hasContent) {
           results.push(cleanData);
         }
