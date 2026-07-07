@@ -5,11 +5,11 @@ import Navbar from '@/components/Navbar';
 import DropZone from '@/components/DropZone';
 import PreviewTable from '@/components/PreviewTable';
 import { importCsvData, ImportResponse } from '@/services/api';
-import { 
-  CheckCircle2, 
-  XCircle, 
-  BarChart3, 
-  ArrowLeft, 
+import {
+  CheckCircle2,
+  XCircle,
+  BarChart3,
+  ArrowLeft,
   RefreshCw,
   FileCheck,
   AlertTriangle,
@@ -88,7 +88,7 @@ export default function Home() {
     try {
       // POST parsed rows to backend API
       const result = await importCsvData(parsedData.allRows);
-      
+
       setProgress(100);
       setImportResponse(result);
       setImportStatus('completed');
@@ -113,10 +113,10 @@ export default function Home() {
     if (!importResponse || importResponse.imported.length === 0) return;
     const leads = importResponse.imported;
     const headers = Object.keys(leads[0]);
-    
+
     const csvContent = [
       headers.join(','),
-      ...leads.map(lead => 
+      ...leads.map(lead =>
         headers.map(header => {
           const val = lead[header];
           if (val === null || val === undefined) return '""';
@@ -166,7 +166,7 @@ export default function Home() {
                 AI-Powered Lead & CSV Importer
               </h1>
               <p className="text-muted-foreground text-lg sm:text-xl">
-                Upload chaotic spreadsheets or leads exports from any platform. Our backend uses Google Gemini AI to map, validate, and structure your records into the standard GrowEasy formats.
+                Upload chaotic spreadsheets or leads exports from any platform. Our backend uses Google Gemini AI to map, validate, and structure your records into the standard formats.
               </p>
             </div>
             <DropZone onFileParsed={handleFileParsed} />
@@ -234,7 +234,7 @@ export default function Home() {
                   <span>{progress}%</span>
                 </div>
                 <div className="w-full h-2.5 bg-muted rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-gradient-to-r from-primary to-indigo-500 transition-all duration-300 ease-out rounded-full"
                     style={{ width: `${progress}%` }}
                   />
@@ -373,7 +373,7 @@ export default function Home() {
             {/* Tables for Imported/Skipped lists */}
             <div className="space-y-4">
               <h3 className="text-xl font-bold tracking-tight text-foreground">Import Breakdown</h3>
-              
+
               <div className="border border-border rounded-2xl overflow-hidden bg-card">
                 <div className="border-b border-border bg-muted/20 px-6 py-4 flex items-center justify-between">
                   <span className="font-bold text-foreground text-sm">Skipped Records Details</span>

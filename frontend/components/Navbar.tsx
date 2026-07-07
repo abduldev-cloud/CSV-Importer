@@ -11,7 +11,7 @@ export default function Navbar() {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     const activeTheme = savedTheme || systemTheme;
-    
+
     setTheme(activeTheme);
     if (activeTheme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -39,9 +39,9 @@ export default function Navbar() {
             <UploadCloud className="h-5 w-5" />
           </div>
           <div>
-            <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-primary to-indigo-500 bg-clip-text text-transparent">
+            {/* <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-primary to-indigo-500 bg-clip-text text-transparent">
               GrowEasy
-            </span>
+            </span> */}
             <span className="ml-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               CSV Importer
             </span>
