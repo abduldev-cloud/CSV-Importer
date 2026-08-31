@@ -1,4 +1,4 @@
-# GrowEasy AI-Powered CSV Importer
+# AI-Powered CSV Importer
 
 An intelligent, full-stack application that allows users to upload lead spreadsheets of any format, size, or structure (e.g., Facebook Lead Exports, Google Ads Exports, CRM tables, manual Excel files) and utilizes Google Gemini AI to dynamically parse, normalize, and map them into the target GrowEasy CRM format.
 
